@@ -17,6 +17,8 @@
 # You can remove these comments if you want or leave
 # them for future reference.
 
+use std/dirs
+
 $env.config.buffer_editor = "code"
 
 if $nu.os-info.name == "linux" {
@@ -41,4 +43,14 @@ def git-fresh [] {
     git checkout $branch
     git fetch
     git pull
+}
+
+
+
+# read the directory of this file
+let config_dir = $nu.config-path | path dirname
+let entry_file_dir = [$config_dir, "entry_pwd.txt"] | path join
+
+if ($entry_file_dir | path exists)  {
+    cd (open $entry_file_dir)
 }
