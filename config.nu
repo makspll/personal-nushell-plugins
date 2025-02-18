@@ -39,7 +39,9 @@ $env.config.show_banner = false
 # Checks out the default branch and pulls the latest changes
 # Stash your changes before running this command
 def git-fresh [] {
-    let branch = git remote show origin | sed -n '/HEAD branch/s/.*: //p'
+    # git status to verify we're in a repo
+    git status
+    let branch = git remote show origin | parse --regex ".*HEAD branch: (?P<name>.*)" | first | get name
     git checkout $branch
     git fetch
     git pull
